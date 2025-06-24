@@ -1,0 +1,62 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - À propos{% endblock %}
+
+    {% block body %}
+
+    <section class="w-full flex-grow flex flex-col justify-start items-center gap-8 px-7 py-12 lg:px-16">
+        <h2 class="text-red">À propos</h2>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ form_start(noticesForm, {
+                'attr': {'class': 'w-full flex flex-col gap-8 justify-start items-center py-8'}
+            }) }}
+
+                <div class="w-full flex flex-col gap-2">
+                    {{ form_label(noticesForm.legal_notices) }}
+                    {{ form_widget(noticesForm.legal_notices, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10 min-h-48 w-full',
+                    }}) }}
+                    {{ form_errors(noticesForm.legal_notices) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2">
+                    {{ form_label(noticesForm.privacy_policy) }}
+                    {{ form_widget(noticesForm.privacy_policy, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10 min-h-48 w-full',
+                    }}) }}
+                    {{ form_errors(noticesForm.privacy_policy) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2">
+                    {{ form_label(noticesForm.gcu) }}
+                    {{ form_widget(noticesForm.gcu, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10 min-h-48 w-full',
+                    }}) }}
+                    {{ form_errors(noticesForm.gcu) }}
+                </div>
+
+                {{ form_widget(noticesForm.submit, {'attr': {'class': 'w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box cursor-pointer'} }) }}
+
+            {{ form_end(noticesForm) }}
+
+        {% else %}
+            <div class="w-full flex-grow flex flex-col justify-start items-center gap-4 p-6">
+                <h4>Mentions légales</h4>
+                <p class="w-full">{{ notices.legalNotices|nl2br|raw }}</p>
+            </div>
+
+            <div class="w-full flex-grow flex flex-col justify-start items-center gap-4 p-6">
+                <h4>Politique de confidentialité</h4>
+                <p class="w-full">{{ notices.privacyPolicy|nl2br|raw }}</p>
+            </div>
+
+            <div class="w-full flex-grow flex flex-col justify-start items-center gap-4 p-6">
+                <h4>Conditions Générales d'Utilisation</h4>
+                <p class="w-full">{{ notices.gcu|nl2br|raw }}</p>
+            </div>
+        {% endif %}
+
+    </section>
+
+    {% endblock %}

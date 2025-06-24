@@ -1,0 +1,79 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - {{ article.name|capitalize }}{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex flex-col lg:flex-row lg:items-center lg:gap-8 lg:px-16 lg:py-8">
+
+        <div class="w-full h-fit aspect-[3/4] shadow-box lg:m-6">
+        {% if article.image %}
+            <img src="{{ asset('img/articles/' ~ article.image) }}" 
+            alt="{{ article.name }}" 
+            class="h-full object-cover lg:rounded-sm"/>
+        {% else %}
+            <img src="{{ asset('img/placeholder.jpg') }}" 
+            alt="Article" 
+            class="h-full object-cover lg:rounded-sm"/>
+        {% endif %}
+        </div>
+
+        <!--Infos Section-->
+            {{ form_start(articleForm, {
+                'attr': {'class': 'w-full h-fit flex flex-col items-center px-4 py-8 gap-6 lg:items-start'}
+            }) }}
+
+                {{ form_errors(articleForm) }}
+
+                <div class="w-full flex gap-4 items-end">
+                    <div class="w-full flex flex-col gap-2">
+                        {{ form_label(articleForm.name) }}
+                        {{ form_widget(articleForm.name, {'attr': {
+                            'class': 'px-4 py-2 shadow-inner rounded-sm bg-white',
+                            'placeholder': 'Nom de l\'article',
+                        }}) }}
+                        {{ form_errors(articleForm.name) }}
+                    </div>
+
+                    {{ form_widget(articleForm.category, {'attr': {
+                        'class': 'h-fit px-4 py-2 bg-white border-gray border-2 rounded-sm shadow-box',
+                    }}) }}
+                    {{ form_errors(articleForm.category) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2">
+                    {{ form_label(articleForm.image) }}
+                    {{ form_widget(articleForm.image, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-white cursor-pointer',
+                    }}) }}
+                    {{ form_errors(articleForm.image) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2">
+                    {{ form_label(articleForm.price) }}
+                    {{ form_widget(articleForm.price, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-white',
+                        'placeholder': 'Prix',
+                    }}) }}
+                    {{ form_errors(articleForm.price) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2">
+                    {{ form_label(articleForm.description) }}
+                    {{ form_widget(articleForm.description, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-white min-h-48',
+                        'placeholder': 'Description',
+                    }}) }}
+                    {{ form_errors(articleForm.description) }}
+                </div>
+
+                <div class="w-full flex gap-3 justify-center">
+                    {{ form_widget(articleForm.submit, {'attr': {'class': 'w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box cursor-pointer'} }) }}
+                    <a href="{{ url('admin_article_drop', {'id': article.id}) }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Supprimer</a>
+                </div>
+
+            {{ form_end(articleForm) }}
+
+    </main>
+
+    {% endblock %}

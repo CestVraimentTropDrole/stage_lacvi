@@ -1,0 +1,52 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - {{ article.name|capitalize }}{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex flex-col lg:flex-row lg:items-center lg:gap-8 lg:px-16 lg:py-8">
+
+        <div class="w-full h-fit aspect-[3/4] shadow-box lg:m-6">
+        {% if article.image %}
+            <img src="{{ asset('img/articles/' ~ article.image) }}" 
+            alt="{{ article.name }}" 
+            class="h-full object-cover lg:rounded-sm"/>
+        {% else %}
+            <img src="{{ asset('img/placeholder.jpg') }}" 
+            alt="Article" 
+            class="h-full object-cover lg:rounded-sm"/>
+        {% endif %}
+        </div>
+
+        <!--Infos Section-->
+        <section class="w-full h-fit flex flex-col items-center px-4 py-8 lg:items-start">
+            <div class="w-full h-fit flex flex-col gap-2 py-5 text-center lg:text-left">
+                <h3>{{ article.name }}</h3>
+                <h4 class="text-red">{{ article.price|number_format(2, ',') }}€ TTC</h4> <!--Formatter le prix au 0,00€-->
+            </div>
+
+            <div class="w-full h-fit flex flex-col items-center gap-2 py-6 text-center border-gray border-y-2 lg:text-left lg:items-start">
+                <p class="text-dgray">{{ article.description }}</p>
+                <p class="w-fit h-fit px-2 py-1 rounded-sm bg-gray">{{ category.name }}</p>
+            </div>
+
+            {% if app.user %}
+            <form method="post" action="{{ url('article_add', {'id': article.id}) }}" class="w-fit h-fit flex  items-center gap-4 py-8">
+                <input type="number" id="quantity" name="quantity" value="1" min="1" class="bg-white shadow-inner rounded-sm p-2">
+
+                {% if not basket %}
+                <div>
+                    <p>Réservation prévue pour le :</p>
+                    <input type="date" id="date" name="date" min="{{ 'now'|date_modify('+7 days')|date('Y-m-d')}}">
+                </div>
+                {% endif %}
+
+                <input type="submit" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box cursor-pointer" value="Commander">
+            </form>
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    {% endblock %}

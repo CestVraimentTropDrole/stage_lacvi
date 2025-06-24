@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}LACVI{% endblock %}</title>
+        <link rel="icon" href="{{ asset('img/favicon.png') }}">
+        <link href="{{ asset('build/output.css') }}" rel="stylesheet">
+        <link href="{{ asset('build/input.css') }}" rel="stylesheet">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+
+
+    <body class="w-full h-fit min-h-lvh bg-linear-to-b from-white to-[#EDD4D4] flex flex-col">
+        {% include 'header.html.twig' %}
+
+        {% include 'partials/flash.html.twig' %}
+
+        {% block body %}{% endblock %}
+
+        <a href="{{ url('contact') }}" class="w-fit h-fit p-3 aspect-square rounded-full bg-red shadow-box fixed left-3 bottom-3">
+            <img src="{{ asset('img/icons/question_mark.svg') }}" alt="?"/>
+        </a>
+
+        {% include 'footer.html.twig' %}
+    </body>
+</html>

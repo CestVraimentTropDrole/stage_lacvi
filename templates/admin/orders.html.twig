@@ -1,0 +1,57 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - Commandes{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex-grow flex flex-col lg:gap-8 lg:px-16 lg:py-8">
+
+        <!--Top Section-->
+        <div class="w-full h-fit flex flex-col gap-2 px-4 py-8 text-center">
+            <h2 class="text-red">Toutes les commandes</h2>
+
+            {% if orders %}
+                <p>Nombre de commandes à valider : {{ number }}</p>
+            {% endif %}
+        </div>
+
+        <!--Orders Sections-->
+        <div class="w-full h-fit flex flex-col gap-4 py-8">
+
+        {% if orders %}
+            {% for rows in orders|batch(2) %}
+            <!--Orders Row-->
+            <div class="w-full flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-8">
+
+                {% for order in rows %}
+                <!--Order Card-->
+                <div class="w-full h-fit flex flex-col items-center gap-4 p-4 bg-white border-red border-2 rounded-sm shadow-box text-left lg:col-span-1">
+                    <div class="w-full h-fit flex justify-between gap-2">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-red">{{ order.user.name }}</h3>
+                            <h4>Pour le {{ order.date|format_datetime('medium', 'none', locale: 'fr') }}</h4>
+                            <p>Commandé le {{ order.created|format_datetime('medium', 'none', locale: 'fr') }}</p>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex flex-col items-left gap-4">
+                        <h4 class="text-red">{{ order.total|number_format(2, ',') }}€</h4>
+                        <div class="w-full flex justify-between">
+                            <a href="{{ url('admin_orders_show', {'id': order.id}) }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Voir la commande</a>
+                            <a href="{{ url('admin_orders_validate', {'id': order.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Valider la commande</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Il n'y a pas de commande à valider</p>
+        {% endif %}
+
+        </div>
+
+    </main>
+
+    {% endblock %}

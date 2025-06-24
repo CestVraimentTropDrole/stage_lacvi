@@ -1,0 +1,93 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - Profil{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex-grow flex flex-col lg:grid lg:grid-cols-12 lg:items-start lg:gap-8 lg:px-16 lg:py-8">
+
+        <!--Infos Section-->
+        <div class="w-full h-fit flex flex-col items-center gap-8 px-7 py-8 lg:col-span-5 lg:border-r-2 lg:border-gray">
+            <div class="w-full">
+                <h2 class="text-red">{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
+                <p>{{ user.phone }}</p>
+                <p>{{ user.adress|nl2br|raw }}</p>
+            </div>
+            <div class="w-fit h-fit flex flex-col items-center gap-3">
+                <a href="{{ url('profile.edit') }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Modifier les informations</a>
+                <a href="{{ url('app_logout') }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Se déconnecter</a>
+
+                <!--Suppression du compte-->
+                <form method="post" action="{{ path('profile_delete') }}" style="display: inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_profile') }}">
+                    <button type="submit" 
+                            class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box cursor-pointer"
+                            onclick="return confirm('Êtes-vous vraiment sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+                        Supprimer mon compte
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!--History Section-->
+        <div class="w-full h-fit flex flex-col items-center gap-8 px-7 py-8 text-center lg:col-span-7 lg:text-left">
+            <h3 class="text-red lg:w-full">Historique de commandes</h3>
+
+            {% if not orders %}
+                <p>Vous n'avez aucune réservation.</p>
+            {% endif %}
+
+            {% for order in orders %}
+            <!--Order Card-->
+            <div class="w-full h-fit flex flex-col items-center gap-6 p-4 bg-white border-red border-2 rounded-sm shadow-box text-left">
+                <div class="w-full h-fit flex justify-between gap-2">
+                    <div class="flex flex-col gap-1">
+                        <h4>Pour le {{ order.date|format_datetime('medium', 'none', locale: 'fr') }}</h4>
+                        <p>Commandé le {{ order.created|format_datetime('medium', 'none', locale: 'fr') }}</p>
+                    </div>
+
+                    {% if order.state == constant('App\\Enum\\OrderState::BASKET') %}
+                        <p class="w-fit h-fit px-2 py-1 rounded-sm bg-gray">Panier</p>
+                    {% endif %}
+
+                    {% if order.state == constant('App\\Enum\\OrderState::CREATED') %}
+                        <p class="w-fit h-fit px-2 py-1 rounded-sm bg-red text-white">Créé</p>
+                    {% endif %}
+
+                    {% if order.state == constant('App\\Enum\\OrderState::VALIDATE') %}
+                        <p class="w-fit h-fit px-2 py-1 rounded-sm bg-green">Validé</p>
+                    {% endif %}
+
+                    {% if order.state == constant('App\\Enum\\OrderState::COMPLETE') %}
+                        <p class="w-fit h-fit px-2 py-1 rounded-sm bg-gray">Terminé</p>
+                    {% endif %}
+                </div>
+
+                <div class="w-full flex flex-col items-center gap-8 lg:flex-row">
+                    <h4 class="text-red">{{ order.total|number_format(2, ',') }}€</h4>
+
+                    {% if order.state != constant('App\\Enum\\OrderState::BASKET') %}
+                        <a href="{{ url('pdf_stream', {'id': order.id}) }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Voir la commande</a>
+                    {% endif %}
+
+                    {% if order.state == constant('App\\Enum\\OrderState::BASKET') %}
+                        <a href="{{ url('basket_validate', {'id': order.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Valider la commande</a>
+                    {% endif %}
+
+                    {% if order.isModifiable == true %}
+                        {% if order.state == constant('App\\Enum\\OrderState::BASKET') %}
+                            <a href="{{ url('basket') }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Modifier la commande</a>
+                        {% else %}
+                            <a href="{{ url('order_modify', {'id': order.id}) }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Modifier la commande</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+    {% endblock %}

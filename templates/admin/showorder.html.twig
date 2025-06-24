@@ -1,0 +1,81 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - Réservation{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex-grow flex flex-col lg:grid lg:grid-cols-12 lg:items-start lg:gap-8 lg:px-16 lg:py-8">
+
+        <!--Basket Section-->
+        <section class="w-full h-full flex flex-col items-center gap-6 px-7 py-4 text-center lg:col-span-8 lg:items-end lg:gap-8 lg:px-12 lg:py-6 lg:border-r-2 lg:border-gray">
+            <h2 class="w-full text-red text-center">Réservation de {{ order.user.name }}</h2>
+
+            {% if order %}
+            <!--Articles Section-->
+            <div class="w-full flex-grow flex flex-col items-center gap-5">
+
+                {% for article in articles %}
+                <!--Article Card-->
+                <div class="w-full flex justify-between items-center gap-4 py-5 border-t-2 border-gray lg:gap-5">
+
+                    <div class="w-2/5 aspect-square rounded-sm shadow-box lg:w-1/6">
+                        <img src="{{ asset('img/placeholder.jpg') }}" alt="Article" class="w-full h-full object-cover rounded-sm" />
+                    </div>
+
+                    <div class="flex flex-grow flex-col items-center gap-2 py-4 lg:flex-row lg:gap-5 lg:justify-between">
+                        <h4>{{ article.articleid.name }}</h4>
+
+                        {% set price = article.articleid.price|default(0) %}
+                        {% set quantity = article.quantity|default(0) %}
+
+                        <p>{{ price|number_format(2, ',') }}€</p>
+                        <p>{{ quantity }}</p>
+                        <h4>{{ (price * quantity)|number_format(2, ',') }}€</h4>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <a href="{{ path('admin_orders_drop', {'id': order.id}) }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Refuser la commande</a>
+            {% endif %}
+        </section>
+
+        <!--Summary Section-->
+        <section class="w-full flex flex-col items-center gap-6 px-8 py-5 text-left lg:col-span-4">
+
+        {% if order %}
+            <h3 class="w-full">Récapitulatif</h3>
+            <h5 class="w-full">Pour le {{ order.date|format_datetime('medium', 'none', locale: 'fr') }}</h5>
+
+            <div class="w-full flex flex-col gap-5 py-5 border-t-2 border-gray">
+                {% set total = 0 %}
+
+                {% for article in articles %}
+                <!--Price Div-->
+                <div class="w-full flex justify-between">
+                    <p>{{ article.articleid.name }}</p>
+
+                    {% set price = article.articleid.price|default(0) %}
+                    {% set quantity = article.quantity|default(0) %}
+                    {% set total = total + price * quantity %}
+
+                    <p>{{ quantity }}</p>
+                    <p>{{ (price * quantity)|number_format(2, ',') }}€</p>
+                </div>
+                {% endfor %}
+
+                <div class="w-full flex justify-between py-4 border-t-2 border-dgray">
+                    <p>Total</p>
+                    <p>{{ total|number_format(2, ',') }}€</p>
+                </div>
+            </div>
+
+            <a href="{{ url('admin_orders_validate', {'id': order.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Valider la commande</a>
+        {% endif %}
+
+        </section>
+
+    </main>
+
+    {% endblock %}

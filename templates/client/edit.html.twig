@@ -1,0 +1,85 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - Modifier le profil{% endblock %}
+
+    {% block body %}
+
+    {{ form_start(editForm, {
+        'attr': {'class': 'w-full flex-grow flex flex-col lg:grid lg:grid-cols-12 lg:items-start lg:gap-8 lg:px-16 lg:py-8'}
+    }) }}
+
+        <!--Infos Section-->
+        <div class="w-full h-fit flex flex-col items-center gap-8 px-7 py-8 lg:col-span-5 lg:border-r-2 lg:border-gray">
+            <div class="w-full">
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
+                <p>{{ user.phone }}</p>
+                <p>{{ user.adress }}</p>
+            </div>
+
+            {{ form_widget(editForm.submit, {'attr': {'class': 'w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box cursor-pointer'} }) }}
+        </div>
+
+        <!--Form Section-->
+        <div class="w-full h-fit flex flex-col items-center gap-4 px-7 py-8 text-center lg:col-span-7 lg:text-left">
+
+            {{ form_errors(editForm) }}
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(editForm.name) }}
+                {{ form_widget(editForm.name, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Nom',
+                }}) }}
+                {{ form_errors(editForm.name) }}
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(editForm.email) }}
+                {{ form_widget(editForm.email, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Adresse email',
+                }}) }}
+                {{ form_errors(editForm.email) }}
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(editForm.phone) }}
+                {{ form_widget(editForm.phone, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Téléphone',
+                }}) }}
+                {{ form_errors(editForm.phone) }}
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(editForm.adress) }}
+                {{ form_widget(editForm.adress, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Adresse',
+                }}) }}
+                {{ form_errors(editForm.adress) }}
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(editForm.lastname) }}
+                {{ form_widget(editForm.lastname, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Nom de famille du contact',
+                }}) }}
+                {{ form_errors(editForm.lastname) }}
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(editForm.firstname) }}
+                {{ form_widget(editForm.firstname, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Prénom du contact',
+                }}) }}
+                {{ form_errors(editForm.firstname) }}
+            </div>
+        </div>
+
+    {{ form_end(editForm) }}
+
+    {% endblock %}

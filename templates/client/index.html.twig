@@ -1,0 +1,57 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex flex-col">
+
+        <!--Hero Section-->
+        <div class="w-full h-fit flex flex-col gap-4 text-center lg:flex-row lg:items-center">
+
+            <div class="w-full h-fit flex flex-col gap-4 p-4 bg-red lg:w-1/2 lg:flex-row lg:items-center">
+                <img src="{{ asset('img/vigneron_independant.jpg') }}" alt="Vignerons indépendants" class="w-full lg:w-auto lg:h-full" /><!--Image-->
+                <div class="w-full h-fit flex flex-col  gap-4 py-5 text-white">
+                    <h2>Bienvenue chez LACVI</h2>
+                    <p>Passez commande directement en ligne</p>
+                </div>
+            </div>
+
+            <div class="w-full h-full flex flex-col items-center gap-8 px-4 py-12 lg:w-1/2">
+                <h3>Actions rapides</h3>
+                <div class="w-fit h-fit flex flex-col gap-3 lg:flex-row lg:gap-8">
+                    <a href="{{ url('profile') }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Voir mes commandes</a>
+                    <a href="{{ url('basket') }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Mon panier</a>
+                    <a href="{{ url('contact') }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Contacter LACVI</a>
+                </div>
+            </div>
+        </div>
+
+        <!--Category Section-->
+        <div class="w-full h-fit flex flex-col gap-12 px-4 py-12 text-center">
+            <h3 class="text-red">Les différentes catégories</h3>
+
+            {% for rows in categories|batch(4) %}
+            <div class="w-full h-fit flex flex-col gap-4 px-9 lg:grid lg:grid-cols-4 lg:gap-8">
+
+                {% for category in rows %}
+                <!--Category Card-->
+                <div class="w-full h-fit flex flex-col bg-white rounded-sm shadow-box">
+                    <!--Image-->
+                    <img src="{{ asset('img/placeholder.jpg') }}" alt="Catégorie" class="rounded-t-sm"/>
+                    <div class="w-full h-fit flex flex-col items-center gap-3 px-4 py-5 text-center">
+                        <h4 class="text-red">{{ category.name }}</h4>
+                        <p>{{ category.description }}</p>
+                        <a href="{{ url('search', {'id': category.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Accéder</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+    {% endblock %}

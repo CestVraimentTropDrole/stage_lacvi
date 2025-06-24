@@ -1,0 +1,60 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - Rechercher{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex-grow flex flex-col lg:gap-8 lg:px-16 lg:py-8">
+
+        <!--Top Section-->
+        <div class="w-full h-fit flex flex-col gap-2 px-4 py-8 text-center">
+            <h2 class="text-red">{{ category.name }}</h2>
+            <p>{{ category.description }}</p>
+        </div>
+
+        <div class="w-full h-fit flex flex-col gap-8 px-4">
+            <!--Inputs Section-->
+
+            <!--Articles Sections-->
+            <div class="w-full h-fit flex flex-col gap-4 py-8">
+
+                {% for rows in articles|batch(4) %}
+                <!--Articles Row-->
+                <div class="w-full flex flex-col gap-4 lg:grid lg:grid-cols-4 lg:gap-8">
+
+                    {% for article in rows %}
+                    <!--Article Card-->
+                    <div class="w-full h-fit flex flex-col bg-white rounded-sm shadow-box">
+                        <!--Image-->
+                        {% if article.image %}
+                            <img src="{{ asset('img/articles/' ~ article.image) }}"
+                            alt="{{ article.name }}"
+                            class="rounded-t-sm"/>
+                        {% else %}
+                            <img src="{{ asset('img/placeholder.jpg') }}" 
+                            alt="Article" 
+                            class="rounded-t-sm"/>
+                        {% endif %}
+                        <div class="w-full h-fit flex flex-col items-center gap-3 px-4 py-5 text-center">
+                            <h4 class="text-red">{{ article.name }}</h4>
+                            <p>{{ article.description }}</p>
+
+                            {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                                <a href="{{ path('admin_article', {'id': article.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Modifier</a>
+                            {% else %}
+                                <a href="{{ path('article_show', {'id': article.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Commander</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </main>
+
+    {% endblock %}

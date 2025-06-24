@@ -1,0 +1,55 @@
+    {% extends 'base.html.twig' %}
+
+    {% block title %}LACVI - Comptes{% endblock %}
+
+    {% block body %}
+
+    <main class="w-full flex-grow flex flex-col lg:gap-8 lg:px-16 lg:py-8">
+
+        <!--Top Section-->
+        <div class="w-full h-fit flex flex-col gap-2 px-4 py-8 text-center">
+            <h2 class="text-red">Tous les comptes en cours de validation</h2>
+
+            {% if users %}
+                <p>Nombre de comptes à valider : {{ number }}</p>
+            {% endif %}
+        </div>
+
+
+        {% if users %}
+        <!--Users Sections-->
+        <div class="w-full h-fit flex flex-col gap-4 py-8">
+
+            {% for rows in users|batch(4) %}
+            <!--Users Row-->
+            <div class="w-full flex flex-col gap-4 lg:grid lg:grid-cols-4 lg:gap-8">
+
+                {% for user in rows %}
+                <!--User Card-->
+                <div class="w-full h-fit flex flex-col items-center bg-white rounded-sm shadow-box px-4 py-5 gap-3">
+                    <div class="flex flex-col gap-1 text-center">
+                        <h4 class="text-red">{{ user.name }}</h4>
+                        <p>{{ user.email }}</p>
+                        <p>{{ user.phone }}</p>
+                    </div>
+                    <div class="w-full flex flex-col gap-3 justify-center lg:flex-row">
+                        <a href="{{ path('admin_accounts_validate', {'id': user.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Valider</a>
+                        <a href="{{ path('admin_accounts_drop', {'id': user.id}) }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-white border-2 border-red text-red shadow-box">Refuser</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+        <div class="w-full h-fit flex justify-center gap-4 py-8">
+            <a href="{{ path('home') }}" class="w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box">Retour à l'accueil</a>
+        </div>
+        {% endif %}
+
+    </main>
+
+    {% endblock %}

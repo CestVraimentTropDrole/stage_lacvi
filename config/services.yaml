@@ -1,0 +1,25 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # Configuration par défaut pour l'auto-wiring
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Enregistrement automatique des services
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Configuration explicite de votre service
+    App\Service\FileUploadService:
+        arguments:
+            $targetDirectory: '%kernel.project_dir%/public/img/articles'

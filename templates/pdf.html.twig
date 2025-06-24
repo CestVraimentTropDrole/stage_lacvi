@@ -1,0 +1,134 @@
+<html>
+<head> 
+    <style>
+        header {
+            display: inline-block;
+            width: 100%;
+            height: auto;
+            border: solid black 2px;
+        }
+        header > img {
+            display: block;
+            float: left;
+        }
+        header > div {
+            float: left;
+            display: block;
+            text-align: center;
+            width: 50%;
+        }
+
+        section {
+            width: 100%;
+            border: solid black 2px;
+        }
+
+        section > div {
+            width: 50%;
+        }
+
+        main {
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: solid black 1px;
+            padding: 4px;
+        }
+
+        th {
+            background-color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="{{ absolute_url(asset('img/vigneron_independant.jpg')) }}" alt="Vigneron indépendant" />
+        <div>
+            <h1>LACVI</h1>
+            <h4>Vente de vin et dégustation</h4>
+            <div>
+                <h5>ZA du Juge Guerin</h5>
+                <h5>74160 Beaumont</h5>
+                <h5>Tél. : +33.4.50.38.80.39 / +33.6.76.98.40.50</h5>
+            </div>
+        </div>
+        <img src="{{ asset('img/vigneron_independant.jpg') }}" alt="Vigneron indépendant" />
+    </header>
+
+    <section>
+        <div id="client_infos">
+            <ul>
+                <li>Commande N°</li>
+                <li>Date :</li>
+                <li>Référ de Cde :</li>
+                <li>Téléphone :</li>
+            </ul>
+            <ul>
+                <li>{{ order.id }}</li>
+                <li>{{ order.date|format_datetime('medium', 'none', locale: 'fr') }}</li>
+                <li>{{ user.lastname }} {{ user.firstname }}</li>
+                <li>{{ user.phone }}</li>
+            </ul>
+        </div>
+
+        <div>
+            <p>{{ user.name }}</p>
+            <p>{{ user.adress|nl2br|raw }}</p>
+        </div>
+    </section>
+
+    <main>
+        <h3>BON de COMMANDE</h3>
+        <p>Ce bon de commande est temporaire et à titre indicatif. Un futur devis sera fourni par la suite.</p>
+        <table>
+            <tr>
+                <th>Désignation</th>
+                <th>Prix unitaire TTC</th>
+                <th>Quantité</th>
+                <th>Total TTC</th>
+            </tr>
+
+            {% set total = 0 %}
+            {% for article in articles %}
+
+            {% set price = article.articleid.price|default(0) %}
+            {% set quantity = article.quantity|default(0) %}
+            {% set total = total + price * quantity %}
+
+            <tr>
+                <td>{{ article.articleid.name }}</td>
+                <td>{{ price|number_format(2, ',') }}€</td>
+                <td>{{ article.quantity }}</td>
+                <td>{{ (price * quantity)|number_format(2, ',') }}€</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+
+    <section>
+        <div>
+            <div></div>
+            <div>
+                <p>Total TTC : {{ total|number_format(2, ',') }}€</p>
+                <p>Lieu de vente : LACVI - Beaumont</p>
+            </div>
+        </div>
+        <div></div>
+        <div></div>
+    </section>
+
+    <footer>
+        <p>CONDITIONS GENERALES DE VENTE</p>
+        <p>(1) Sauf convention particulière aucun escompte n'est consenti pour paiement comptant. (2) Tout retard dépassant 30 jours entraînera des pénalités au taux du découvert bancaire. (3) Aucun échange ni retour ne sera accepté sauf accord préalable. (4) Les produits objets de votre commande restent notre entière propriété jusqu'à paiement intégral de la facture. (5) Pour tout litige convernant les présentes conditions générales de vente, attribution de juridiction est faite au tribunal de commerce de Thonon-les-Bains. (6) Le fait de passer une commande entraîne l'acceptation des présentes conditions générales de vente. Le montant de l'indemnité forfaitaire pour frais de recouvrement due au créancier en cas de retard de paiement, conformément à l'article 121-II de la loi n4 2012-387 du 22 mars 2012. <br /> Cette indemnité est fixée à 40€ par le décret n°2012-1115 du 2 octobre 2012.<p>
+        <h5>Siret : 829 454 560 000 14 - TVA : FR91 829 454 560</h5>
+        <h5>C.A. des Savoies - IBAN : FR76 1810 6000 7096 7666 3771 763 - BIC/SWIFT : AGRIFRPP881</h5>
+    </footer>
+</body>
+</html>

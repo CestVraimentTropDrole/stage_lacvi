@@ -1,0 +1,116 @@
+{% extends 'baseform.html.twig' %}
+
+{% block title %}LACVI - Inscription{% endblock %}
+
+{% block body %}
+
+<section class="w-full h-full flex flex-col px-4 py-8 lg:gap-3 lg:py-8 lg:items-center">
+
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger text-red" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm, {
+        'attr': {'class': 'w-full h-fit flex flex-col items-center gap-12 px-6 py-8 rounded-sm bg-white lg:w-2/3 lg:px-16 lg:py-8 lg:shadow-box'}
+    }) }}
+
+        <h2 class="text-red lg:text-center">S'inscrire</h2>
+
+        <!--Form Inputs-->
+        <div class="w-full flex flex-col items-center gap-6 font-calibri">
+            <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                {{ form_label(registrationForm.name) }}
+                {{ form_widget(registrationForm.name, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Nom',
+                }}) }}
+                {{ form_errors(registrationForm.name) }}
+            </div>
+
+            <!--Password-->
+            <div class="w-full flex flex-col gap-5 lg:flex-row">
+                <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                    {{ form_label(registrationForm.plainPassword.first) }}
+                    {{ form_widget(registrationForm.plainPassword.first, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                        'placeholder': 'Mot de passe'
+                    }}) }}
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                    {{ form_label(registrationForm.plainPassword.second) }}
+                    {{ form_widget(registrationForm.plainPassword.second, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                        'placeholder': 'Confirmer le mot de passe'
+                    }}) }}
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+            </div>
+
+            <!--Infos-->
+            <div class="w-full flex flex-col gap-5 lg:flex-row">
+                <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                    {{ form_label(registrationForm.email) }}
+                    {{ form_widget(registrationForm.email, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                        'placeholder': 'Adresse email',
+                    }}) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                    {{ form_label(registrationForm.phone) }}
+                    {{ form_widget(registrationForm.phone, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                        'placeholder': 'Téléphone',
+                    }}) }}
+                    {{ form_errors(registrationForm.phone) }}
+                </div>
+            </div>
+
+            <div class="w-full flex flex-col gap-2">
+                {{ form_label(registrationForm.adress) }}
+                {{ form_widget(registrationForm.adress, {'attr': {
+                    'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                    'placeholder': 'Adresse',
+                }}) }}
+                {{ form_errors(registrationForm.adress) }}
+            </div>
+
+            <!--Contact-->
+            <div class="w-full flex flex-col gap-5 lg:flex-row">
+                <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                    {{ form_label(registrationForm.firstname) }}
+                    {{ form_widget(registrationForm.firstname, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                        'placeholder': 'Prénom du contact',
+                    }}) }}
+                    {{ form_errors(registrationForm.firstname) }}
+                </div>
+
+                <div class="w-full flex flex-col gap-2 lg:w-1/2">
+                    {{ form_label(registrationForm.lastname) }}
+                    {{ form_widget(registrationForm.lastname, {'attr': {
+                        'class': 'px-4 py-2 shadow-inner rounded-sm bg-gray/10',
+                        'placeholder': 'Nom du contact',
+                    }}) }}
+                    {{ form_errors(registrationForm.lastname) }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_widget(registrationForm.submit, {'attr': {'class': 'w-fit h-fit px-6 py-3 rounded-sm bg-red text-white shadow-box cursor-pointer'} }) }}
+
+        <div class="w-full flex flex-col items-center px-6 py-5 gap-3 border-t-2 border-gray lg:flex-row lg:justify-between">
+            <p>Vous avez déjà un compte ?</p>
+            <a href="{{ url('app_login') }}" class="w-auto h-auto px-6 py-3 rounded-sm bg-white border-2 border-red text-red">Se connecter</a>
+        </div>
+
+    {{ form_end(registrationForm) }}
+
+</section>
+
+{% endblock %}

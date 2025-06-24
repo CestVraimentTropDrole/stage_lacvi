@@ -1,0 +1,26 @@
+    {% block footer %}
+
+    <footer class="w-full h-fit flex flex-col gap-6 p-8 bg-red text-white lg:flex-row lg:gap-16 lg:px-16 lg:py-8 lg:items-center">
+        <img src="{{ asset('img/logo_footer.png') }}" alt="Logo" class="w-[199px] h-[54px]" />
+
+        <div class="w-fit h-fit flex flex-col gap-2">
+            <h5>Contact</h5>
+            <p>Zone Artisanale Juge Guérin, <br /> 74160 Beaumont</p>
+            <p>+33 (0)4 50 38 80 39</p>
+            <a href="{{ url('contact') }}">Nous contacter</a>
+        </div>
+
+        <div class="w-fit h-fit flex flex-col gap-2">
+            <h5>Horaires</h5>
+            <p>Du Mardi au Samedi : 9h30 - 12h30 / 14h30 - 18h45</p>
+            <p>Restez informés</p>
+        </div>
+
+        <div class="w-fit h-fit flex flex-col gap-2">
+            <p>© Copyright - LACVI</p>
+            <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
+            <a href="{{ url('about') }}">Mentions légales</a>
+        </div>
+    </footer>
+
+    {% endblock %}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}LACVI{% endblock %}</title>
+        <link rel="icon" href="img/favicon.png">
+        <link href="{{ asset('build/output.css') }}" rel="stylesheet">
+        <link href="{{ asset('build/input.css') }}" rel="stylesheet">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+
+
+    <body class="w-full h-fit min-h-lvh lg:bg-linear-to-b lg:from-white lg:to-[#EDD4D4] flex flex-col">
+        {% include 'headerform.html.twig' %}
+
+        {% block body %}{% endblock %}
+
+    </body>
+</html>
